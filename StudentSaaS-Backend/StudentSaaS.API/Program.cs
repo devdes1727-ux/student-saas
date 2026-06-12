@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AngularPolicy", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy.AllowAnyHeader()
               .AllowAnyMethod()
@@ -51,6 +51,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5164";
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 // Swagger (ONLY DEV)
 if (app.Environment.IsDevelopment())
@@ -59,7 +61,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AngularPolicy");
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
