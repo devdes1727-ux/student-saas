@@ -1,0 +1,78 @@
+<div class="page">
+
+    <div class="header">
+
+        <div>
+            <h1>{{course.name}}</h1>
+            <p>{{course.duration}}</p>
+        </div>
+
+        <button class="primary-btn" (click)="openBatchModal()">
+            + Add Batch
+        </button>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>Course Fee</h3>
+            <h2>₹{{course.fee}}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Total Batches</h3>
+            <h2>{{batches.length}}</h2>
+        </div>
+
+    </div>
+
+    <div class="batch-section">
+
+        <h2>Batches</h2>
+
+        <div class="batch-card" *ngFor="let batch of batches" (click)="openBatch(batch.id)">
+
+            <div>
+
+                <h3>{{batch.name}}</h3>
+
+                <p>{{batch.timing}}</p>
+
+            </div>
+
+            <span>
+                {{batch.students}} Students
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal" *ngIf="showBatchModal">
+
+    <div class="modal-content">
+
+        <h2>Add Batch</h2>
+
+        <input [(ngModel)]="batch.name" placeholder="Batch Name">
+
+        <input [(ngModel)]="batch.timing" placeholder="Batch Timing">
+
+        <div class="actions">
+
+            <button (click)="addBatch()">
+                Save
+            </button>
+
+            <button (click)="closeBatchModal()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

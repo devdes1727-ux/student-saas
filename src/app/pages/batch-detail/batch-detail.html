@@ -1,0 +1,112 @@
+<div class="page">
+
+    <div class="header">
+
+        <div>
+            <h1>{{batch.name}}</h1>
+            <p>{{batch.course}}</p>
+        </div>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>Students</h3>
+            <h2>{{students.length}}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Staff</h3>
+            <h2>{{batch.staff}}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Timing</h3>
+            <h2>{{batch.timing}}</h2>
+        </div>
+
+    </div>
+
+    <div class="tabs">
+
+        <button [class.active]="selectedTab==='students'" (click)="selectedTab='students'">
+            Students
+        </button>
+
+        <button [class.active]="selectedTab==='attendance'" (click)="selectedTab='attendance'">
+            Attendance
+        </button>
+
+        <button [class.active]="selectedTab==='fees'" (click)="selectedTab='fees'">
+            Fees
+        </button>
+
+    </div>
+
+    <!-- STUDENTS TAB -->
+    <div *ngIf="selectedTab==='students'">
+
+        <table>
+
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+            </tr>
+
+            <tr *ngFor="let student of students">
+                <td>{{student.name}}</td>
+                <td>{{student.phone}}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- ATTENDANCE TAB -->
+    <div *ngIf="selectedTab==='attendance'">
+
+        <div class="attendance-header">
+
+            <h2>Today's Attendance</h2>
+
+            <button class="save-btn" (click)="saveAttendance()">
+                Save Attendance
+            </button>
+
+        </div>
+
+        <div class="attendance-list">
+
+            <div class="attendance-row" *ngFor="let student of students">
+
+                <span>
+                    {{student.name}}
+                </span>
+
+                <label class="switch">
+
+                    <input type="checkbox" [(ngModel)]="student.present">
+
+                    <span>
+                        {{student.present ? 'Present' : 'Absent'}}
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FEES TAB -->
+    <div *ngIf="selectedTab==='fees'">
+
+        <div class="coming">
+            Fee management coming next
+        </div>
+
+    </div>
+
+</div>

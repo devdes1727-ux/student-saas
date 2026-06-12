@@ -1,0 +1,21 @@
+<div class="page">
+
+    <h1>Subscription Plans</h1>
+
+    <div class="plans">
+
+        <div class="plan-card" *ngFor="let plan of plans">
+
+            <h2>{{plan.name}}</h2>
+
+            <h1>₹{{plan.price}}</h1>
+
+            <p>
+                Students: {{plan.students}}
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

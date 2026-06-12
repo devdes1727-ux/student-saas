@@ -1,0 +1,50 @@
+<div class="sidebar">
+
+    <div class="brand">
+        <div class="logo-circle">E</div>
+        <div>
+            <h3>EduSaaS</h3>
+            <span>Institute ERP</span>
+        </div>
+    </div>
+
+    <div class="user-card">
+        <div class="avatar">
+            {{ user?.name?.charAt(0) || 'A' }}
+        </div>
+
+        <div>
+            <div class="user-name">{{user?.name}}</div>
+            <div class="user-role">{{user?.role}}</div>
+        </div>
+    </div>
+
+    <nav>
+
+        <a routerLink="/dashboard" routerLinkActive="active">
+            📊 Dashboard
+        </a>
+
+        <a routerLink="/students" routerLinkActive="active">
+            🎓 Students
+        </a>
+
+        <a routerLink="/staff" routerLinkActive="active">
+            👨‍🏫 Staff
+        </a>
+
+        <a routerLink="/courses" routerLinkActive="active">
+            📚 Courses
+        </a>
+
+        <a routerLink="/attendance" routerLinkActive="active">
+            📅 Attendance
+        </a>
+
+    </nav>
+
+    <button class="logout-btn" (click)="logout()">
+        Logout
+    </button>
+
+</div>

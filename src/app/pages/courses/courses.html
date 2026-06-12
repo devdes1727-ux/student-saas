@@ -1,0 +1,83 @@
+<div class="page-header">
+
+    <div>
+        <h1>Courses</h1>
+        <p>Manage academy courses</p>
+    </div>
+
+    <button class="primary-btn" (click)="openModal()">
+        + Add Course
+    </button>
+
+</div>
+
+<div class="search-box">
+    <input
+        type="text"
+        placeholder="Search Courses">
+</div>
+
+<div class="course-grid">
+
+    <div
+        class="course-card"
+        *ngFor="let course of courses"
+        (click)="openCourse(course.id)">
+
+        <h2>{{course.courseName}}</h2>
+
+        <p>{{course.courseCode}}</p>
+
+        <div class="course-info">
+            <span>₹{{course.fee}}</span>
+            <span>{{course.durationMonths}} Months</span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal" *ngIf="showModal">
+
+    <div class="modal-content">
+
+        <h2>Add Course</h2>
+
+        <input
+            [(ngModel)]="course.courseName"
+            placeholder="Course Name">
+
+        <input
+            [(ngModel)]="course.courseCode"
+            placeholder="Course Code">
+
+        <input
+            type="number"
+            [(ngModel)]="course.fee"
+            placeholder="Course Fee">
+
+        <input
+            type="number"
+            [(ngModel)]="course.durationMonths"
+            placeholder="Duration (Months)">
+
+        <textarea
+            [(ngModel)]="course.description"
+            placeholder="Description">
+        </textarea>
+
+        <div class="actions">
+
+            <button class="save-btn" (click)="addCourse()">
+                Save
+            </button>
+
+            <button class="cancel-btn" (click)="closeModal()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

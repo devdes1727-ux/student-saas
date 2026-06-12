@@ -1,0 +1,57 @@
+<div class="header">
+
+    <h1>Staff</h1>
+
+    <button class="primary-btn" (click)="openModal()">
+        + Add Staff
+    </button>
+
+</div>
+
+<table>
+
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Phone</th>
+        <th>Status</th>
+    </tr>
+
+    <tr *ngFor="let staff of staffList" (click)="viewStaff(staff.id)">
+
+        <td>{{staff.name}}</td>
+        <td>{{staff.role}}</td>
+        <td>{{staff.phone}}</td>
+        <td>{{staff.status}}</td>
+
+    </tr>
+
+</table>
+
+<div class="modal" *ngIf="showModal">
+
+    <div class="modal-content">
+
+        <h2>Add Staff</h2>
+
+        <input [(ngModel)]="staff.name" placeholder="Name">
+
+        <input [(ngModel)]="staff.role" placeholder="Role">
+
+        <input [(ngModel)]="staff.phone" placeholder="Phone">
+
+        <div class="actions">
+
+            <button class="primary-btn" (click)="addStaff()">
+                Save
+            </button>
+
+            <button (click)="closeModal()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

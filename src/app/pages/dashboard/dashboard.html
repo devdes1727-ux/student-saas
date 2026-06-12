@@ -1,0 +1,76 @@
+<div class="dashboard">
+
+    <h1>Dashboard</h1>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>Institutes</h3>
+            <h2>{{stats.totalInstitutes}}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Students</h3>
+            <h2>{{stats.totalStudents}}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Staff</h3>
+            <h2>{{stats.totalStaff}}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Courses</h3>
+            <h2>{{stats.totalCourses}}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Monthly Revenue</h3>
+            <h2>₹{{stats.monthlyRevenue}}</h2>
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="card">
+
+            <h3>Recent Payments</h3>
+
+            <table>
+
+                <tr>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+
+                <tr *ngFor="let payment of recentPayments">
+
+                    <td>{{payment.student}}</td>
+                    <td>₹{{payment.amount}}</td>
+                    <td>{{payment.date}}</td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Fee Due Students</h3>
+
+            <ul>
+
+                <li *ngFor="let student of dueStudents">
+                    {{student}}
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>

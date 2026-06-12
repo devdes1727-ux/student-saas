@@ -1,0 +1,25 @@
+<div class="page">
+
+    <h1>Clients</h1>
+
+    <table>
+
+        <tr>
+            <th>Institute</th>
+            <th>Plan</th>
+            <th>Students</th>
+            <th>Status</th>
+        </tr>
+
+        <tr *ngFor="let client of clients">
+
+            <td>{{client.name}}</td>
+            <td>{{client.plan}}</td>
+            <td>{{client.students}}</td>
+            <td>{{client.status}}</td>
+
+        </tr>
+
+    </table>
+
+</div>

@@ -1,0 +1,177 @@
+<div class="page">
+
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h1>{{student.name}}</h1>
+            <p>{{student.studentId}}</p>
+        </div>
+
+        <button class="edit-btn">
+            Edit Student
+        </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+
+        <button [class.active]="selectedTab==='overview'" (click)="selectedTab='overview'">
+            Overview
+        </button>
+
+        <button [class.active]="selectedTab==='attendance'" (click)="selectedTab='attendance'">
+            Attendance
+        </button>
+
+        <button [class.active]="selectedTab==='fees'" (click)="selectedTab='fees'">
+            Fees
+        </button>
+
+    </div>
+
+    <!-- OVERVIEW -->
+    <div *ngIf="selectedTab==='overview'">
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Student Information</h3>
+
+                <div class="info-row">
+                    <label>Course</label>
+                    <span>{{student.course}}</span>
+                </div>
+
+                <div class="info-row">
+                    <label>Batch</label>
+                    <span>{{student.batch}}</span>
+                </div>
+
+                <div class="info-row">
+                    <label>Phone</label>
+                    <span>{{student.phone}}</span>
+                </div>
+
+                <div class="info-row">
+                    <label>Status</label>
+                    <span>{{student.status}}</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Parent Information</h3>
+
+                <div class="info-row">
+                    <label>Name</label>
+                    <span>{{student.parentName}}</span>
+                </div>
+
+                <div class="info-row">
+                    <label>Phone</label>
+                    <span>{{student.parentPhone}}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div *ngIf="selectedTab==='attendance'">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h3>Total Classes</h3>
+                <h2>{{attendanceSummary.totalClasses}}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Attended</h3>
+                <h2>{{attendanceSummary.attendedClasses}}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Attendance %</h3>
+                <h2>{{attendancePercentage}}%</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FEES -->
+    <div *ngIf="selectedTab==='fees'">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h3>Course Fee</h3>
+                <h2>₹{{courseFee}}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Paid</h3>
+                <h2>₹{{totalPaid}}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Balance</h3>
+                <h2>₹{{balance}}</h2>
+            </div>
+
+        </div>
+
+        <div class="payment-header">
+
+            <h2>Payment History</h2>
+
+            <button class="primary-btn" (click)="openPaymentModal()">
+                + Add Payment
+            </button>
+
+        </div>
+
+        <table>
+
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+
+            <tr *ngFor="let payment of payments">
+                <td>{{payment.date}}</td>
+                <td>₹{{payment.amount}}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- PAYMENT MODAL -->
+
+<div class="modal" *ngIf="showPaymentModal">
+
+    <div class="modal-content">
+
+        <h2>Add Payment</h2>
+
+        <input type="number" [(ngModel)]="paymentAmount" placeholder="Enter Amount">
+
+        <div class="actions">
+
+            <button class="primary-btn" (click)="addPayment()">
+                Save
+            </button>
+
+            <button class="cancel-btn" (click)="closePaymentModal()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
