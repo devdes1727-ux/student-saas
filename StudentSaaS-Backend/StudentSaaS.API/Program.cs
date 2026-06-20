@@ -71,18 +71,19 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 // Seed Database
 await DbInitializer.SeedAsync(app.Services);
 
-// Swagger (ONLY DEV)
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger (all environments for testing)
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("AllowAll");
 
 app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+// Only redirect to HTTPS in development (Render handles TLS externally)
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 // 🔐 IMPORTANT ORDER
 app.UseAuthentication();
