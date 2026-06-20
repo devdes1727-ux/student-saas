@@ -1,5 +1,151 @@
-<h1>Attendance</h1>
+<div class="page-wrapper">
 
-<div class="card">
-    <p>Mark attendance by batch</p>
+  <div class="page-header">
+    <div>
+      <div class="page-title">📅 Attendance</div>
+      <div class="page-subtitle">Record and track student attendance</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-secondary" (click)="monthlyView=!monthlyView">
+        <i class="fa-solid" [class.fa-calendar-days]="!monthlyView" [class.fa-clipboard-list]="monthlyView"></i>
+        {{ monthlyView ? 'Bulk Entry' : 'Monthly View' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Bulk Entry View ── -->
+  <ng-container *ngIf="!monthlyView">
+
+    <!-- Selector Panel -->
+    <div class="card-premium" style="margin-bottom:24px">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end">
+        <div class="form-group" style="margin:0;flex:1;min-width:180px">
+          <label>Course</label>
+          <select class="form-control" [(ngModel)]="selectedCourse">
+            <option value="">Select course</option>
+            <option *ngFor="let c of courses" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;flex:1;min-width:160px">
+          <label>Date</label>
+          <input class="form-control" type="date" [(ngModel)]="selectedDate">
+        </div>
+        <button class="btn-primary" (click)="loadAttendance()" [disabled]="loading">
+          <i class="fa-solid fa-search"></i> Load Students
+        </button>
+      </div>
+    </div>
+
+    <!-- Attendance Table -->
+    <div *ngIf="students.length > 0">
+      <div class="card-premium" style="padding:0">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border-color);display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span style="font-weight:700;font-size:14px">{{ students.length }} Students</span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn-secondary" style="padding:6px 14px;font-size:12px" (click)="markAll('Present')">✅ All Present</button>
+            <button class="btn-secondary" style="padding:6px 14px;font-size:12px" (click)="markAll('Absent')">❌ All Absent</button>
+          </div>
+        </div>
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Student</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Late</th>
+              <th>Leave</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of students; let i = index">
+              <td style="color:var(--text-muted)">{{ i+1 }}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#ec4899);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px">
+                    {{ s.name?.charAt(0)?.toUpperCase() }}
+                  </div>
+                  <div>
+                    <div style="font-weight:600;font-size:14px">{{ s.name }}</div>
+                    <div style="font-size:11px;color:var(--text-muted)">{{ s.phone }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <label class="att-radio" [class.active]="attendanceMap[s.id]==='Present'">
+                  <input type="radio" [name]="'att-'+s.id" value="Present" [(ngModel)]="attendanceMap[s.id]"> Present
+                </label>
+              </td>
+              <td>
+                <label class="att-radio absent" [class.active]="attendanceMap[s.id]==='Absent'">
+                  <input type="radio" [name]="'att-'+s.id" value="Absent" [(ngModel)]="attendanceMap[s.id]"> Absent
+                </label>
+              </td>
+              <td>
+                <label class="att-radio late" [class.active]="attendanceMap[s.id]==='Late'">
+                  <input type="radio" [name]="'att-'+s.id" value="Late" [(ngModel)]="attendanceMap[s.id]"> Late
+                </label>
+              </td>
+              <td>
+                <label class="att-radio leave" [class.active]="attendanceMap[s.id]==='Leave'">
+                  <input type="radio" [name]="'att-'+s.id" value="Leave" [(ngModel)]="attendanceMap[s.id]"> Leave
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="padding:16px 20px;border-top:1px solid var(--border-color);display:flex;justify-content:flex-end">
+          <button class="btn-primary" (click)="save()" [disabled]="saving">
+            <i class="fa-solid fa-floppy-disk"></i>
+            {{ saving ? 'Saving...' : 'Save Attendance' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && students.length === 0 && selectedCourse" style="text-align:center;padding:60px;color:var(--text-muted)">
+      <div style="font-size:48px">📋</div>
+      <p style="margin-top:12px">Select a course and date, then click Load Students</p>
+    </div>
+
+  </ng-container>
+
+  <!-- ── Monthly View ── -->
+  <ng-container *ngIf="monthlyView">
+
+    <div class="card-premium" style="margin-bottom:24px">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end">
+        <div class="form-group" style="margin:0;flex:1;min-width:180px">
+          <label>Course (for export)</label>
+          <select class="form-control" [(ngModel)]="selectedCourse">
+            <option value="">Select course</option>
+            <option *ngFor="let c of courses" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;flex:1;min-width:140px">
+          <label>Month</label>
+          <select class="form-control" [(ngModel)]="selectedMonth">
+            <option *ngFor="let m of months; let i = index" [value]="i+1">{{ m }}</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;min-width:100px">
+          <label>Year</label>
+          <select class="form-control" [(ngModel)]="selectedYear">
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+        <button class="btn-primary" (click)="exportCsv()">
+          <i class="fa-solid fa-file-csv"></i> Export CSV
+        </button>
+      </div>
+    </div>
+
+    <div class="card-premium" style="text-align:center;padding:48px;color:var(--text-muted)">
+      <div style="font-size:48px">📊</div>
+      <p style="margin-top:12px">Select a course and click Export CSV to download the monthly report</p>
+    </div>
+
+  </ng-container>
+
 </div>

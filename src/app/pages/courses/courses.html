@@ -1,83 +1,63 @@
-<div class="page-header">
+<div class="courses-grid" *ngIf="!loading">
 
-    <div>
-        <h1>Courses</h1>
-        <p>Manage academy courses</p>
-    </div>
+  <div class="course-card card-premium" *ngFor="let c of filtered">
 
-    <button class="primary-btn" (click)="openModal()">
-        + Add Course
-    </button>
+    <div class="course-header">
 
-</div>
+      <div class="course-icon">
+        📚
+      </div>
 
-<div class="search-box">
-    <input
-        type="text"
-        placeholder="Search Courses">
-</div>
-
-<div class="course-grid">
-
-    <div
-        class="course-card"
-        *ngFor="let course of courses"
-        (click)="openCourse(course.id)">
-
-        <h2>{{course.courseName}}</h2>
-
-        <p>{{course.courseCode}}</p>
-
-        <div class="course-info">
-            <span>₹{{course.fee}}</span>
-            <span>{{course.durationMonths}} Months</span>
-        </div>
+      <span class="badge" [class.badge-success]="c.isActive" [class.badge-warning]="!c.isActive">
+        {{ c.isActive ? 'Active' : 'Inactive' }}
+      </span>
 
     </div>
 
-</div>
+    <h3 class="course-name">
+      {{ c.name }}
+    </h3>
 
-<div class="modal" *ngIf="showModal">
+    <p class="course-desc">
+      {{ c.description || 'No description available' }}
+    </p>
 
-    <div class="modal-content">
+    <div class="course-meta">
 
-        <h2>Add Course</h2>
+      <div class="meta-item">
+        💰 ₹{{ c.fee }}
+      </div>
 
-        <input
-            [(ngModel)]="course.courseName"
-            placeholder="Course Name">
+      <div class="meta-item">
+        ⏱ {{ c.duration }}
+      </div>
 
-        <input
-            [(ngModel)]="course.courseCode"
-            placeholder="Course Code">
+      <div class="meta-item">
+        🎯 {{ c.level }}
+      </div>
 
-        <input
-            type="number"
-            [(ngModel)]="course.fee"
-            placeholder="Course Fee">
+      <div class="meta-item">
+        👥 {{ c.maxStudents }} Students
+      </div>
 
-        <input
-            type="number"
-            [(ngModel)]="course.durationMonths"
-            placeholder="Duration (Months)">
-
-        <textarea
-            [(ngModel)]="course.description"
-            placeholder="Description">
-        </textarea>
-
-        <div class="actions">
-
-            <button class="save-btn" (click)="addCourse()">
-                Save
-            </button>
-
-            <button class="cancel-btn" (click)="closeModal()">
-                Cancel
-            </button>
-
-        </div>
+      <div class="meta-item">
+        🧒 {{ c.ageGroup }}
+      </div>
 
     </div>
+
+    <div class="course-actions">
+
+      <button class="btn-secondary" style="flex:1" (click)="openEdit(c)">
+        ✏ Edit
+      </button>
+
+      <button class="btn-icon danger" (click)="delete(c)">
+        🗑
+      </button>
+
+    </div>
+
+  </div>
 
 </div>

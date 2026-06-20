@@ -1,0 +1,102 @@
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">🖼️ Gallery</div>
+      <div class="page-subtitle">{{ filtered.length }} images</div>
+    </div>
+    <button class="btn-primary" (click)="openAdd()">
+      <i class="fa-solid fa-plus"></i> Add Image
+    </button>
+  </div>
+
+  <!-- Category filter pills -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+    <button *ngFor="let cat of categories"
+            (click)="filterCategory=cat; applyFilter()"
+            [style.background]="filterCategory===cat?'var(--primary-color)':'var(--bg-secondary)'"
+            [style.color]="filterCategory===cat?'white':'var(--text-secondary)'"
+            [style.borderColor]="filterCategory===cat?'var(--primary-color)':'var(--border-color)'"
+            style="padding:6px 16px;border:1.5px solid;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);transition:all 0.2s">
+      {{ cat }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" style="text-align:center;padding:60px;color:var(--text-muted)">
+    <span style="font-size:32px">⏳</span><p style="margin-top:10px">Loading gallery...</p>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="gallery-grid" *ngIf="!loading">
+    <div class="gallery-item" *ngFor="let item of filtered">
+      <div class="gallery-img-wrap">
+        <img [src]="item.imageUrl" [alt]="item.title" (error)="item.imageUrl='https://placehold.co/400x300/6366f1/fff?text=Art'">
+        <div class="gallery-overlay">
+          <button class="btn-icon" (click)="openEdit(item)" style="background:white;color:#1e293b">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button class="btn-icon danger" (click)="delete(item)" style="background:white">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        <span class="gallery-featured" *ngIf="item.isFeatured">⭐</span>
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-title">{{ item.title }}</div>
+        <div class="gallery-meta">
+          <span class="badge badge-info">{{ item.category }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filtered.length===0" style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">
+      <div style="font-size:48px">🖼️</div>
+      <p style="margin-top:12px">No images in this category. Add your first artwork!</p>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEdit ? '✏️ Edit Image' : '➕ Add Image' }}</h3>
+        <button class="modal-close" (click)="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Title *</label>
+          <input class="form-control" type="text" [(ngModel)]="form.title" placeholder="Artwork title">
+        </div>
+        <div class="form-group">
+          <label>Image URL *</label>
+          <input class="form-control" type="url" [(ngModel)]="form.imageUrl" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control" [(ngModel)]="form.category">
+            <option *ngFor="let c of categories.slice(1)" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input class="form-control" type="text" [(ngModel)]="form.description" placeholder="Optional description">
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:10px">
+          <input type="checkbox" id="featured" [(ngModel)]="form.isFeatured" style="width:16px;height:16px">
+          <label for="featured" style="margin:0;color:var(--text-primary)">Feature on home page</label>
+        </div>
+        <!-- Preview -->
+        <div *ngIf="form.imageUrl" style="margin-top:8px;border-radius:10px;overflow:hidden;max-height:160px">
+          <img [src]="form.imageUrl" style="width:100%;object-fit:cover;max-height:160px" alt="Preview">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn-primary" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Saving...' : (isEdit ? 'Update' : 'Add to Gallery') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

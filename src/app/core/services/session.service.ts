@@ -1,11 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
 
+  private platformId = inject(PLATFORM_ID);
+
   getUser(): any {
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
@@ -22,8 +30,21 @@ export class SessionService {
     return this.getRole() === 'InstituteAdmin';
   }
 
+  isLoggedIn(): boolean {
+
+    if (!isPlatformBrowser(this.platformId)) {
+      return false;
+    }
+
+    return !!localStorage.getItem('user');
+  }
+
   logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
+
   }
 }

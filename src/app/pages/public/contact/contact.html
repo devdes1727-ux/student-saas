@@ -1,0 +1,66 @@
+<section class="rounded-[2rem] bg-white p-8 border border-slate-200 shadow-soft sm:p-10 animate-fade-in">
+  <span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Contact Us</span>
+  <h1 class="text-slate-950 font-bold text-3xl tracking-tight sm:text-4xl mt-4 leading-tight">Connect with Sivaram Kalaikoodam.</h1>
+  <p class="mt-4 text-base text-slate-600 sm:text-lg">Send your enquiry, book a trial class, or get directions to our academy in Tirunelveli.</p>
+</section>
+
+<section class="mt-10 grid gap-8 lg:grid-cols-[1fr_0.95fr]">
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
+    <h2 class="text-2xl font-bold text-slate-900">Visit or call us</h2>
+    <div class="mt-6 space-y-4 text-slate-600">
+      <div>
+        <p class="font-semibold text-slate-950">Address</p>
+        <p class="text-sm">New Zion Nagar, 5/5, Opp. STC, Perumalpuram, Vasantha Nagar, Tirunelveli, Tamil Nadu 627007</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-950">Phone</p>
+        <p class="text-sm">+91 93457 23852</p>
+      </div>
+      <div>
+        <p class="font-semibold text-slate-950">WhatsApp</p>
+        <p class="text-sm"><a href="https://wa.me/919345723852" target="_blank" rel="noreferrer" class="text-amber-500 hover:text-amber-600 font-medium">Chat on WhatsApp</a></p>
+      </div>
+    </div>
+    <div class="mt-8 overflow-hidden rounded-2xl border border-slate-200">
+      <iframe class="h-72 w-full border-0" loading="lazy" src="https://maps.google.com/maps?q=8.6986641,77.7380464&hl=en;z=17&output=embed" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <a href="https://www.google.com/maps/place/Sivaramkalaikoodam/@8.6986641,77.7380464,17z" target="_blank" rel="noreferrer noopener" class="inline-flex justify-center rounded-full bg-slate-900 hover:bg-slate-800 px-5 py-2.5 text-xs font-semibold text-white shadow-md">
+        Open in Google Maps
+      </a>
+      <span class="text-xs text-slate-500 font-medium">Location: Sivaram Kalaikoodam, Tirunelveli</span>
+    </div>
+  </div>
+
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft flex flex-col justify-center">
+    <form (ngSubmit)="submitForm()" [formGroup]="contactForm" class="space-y-5">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class="block">
+          <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Full Name</span>
+          <input type="text" formControlName="name" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus:border-amber-400 focus:outline-none text-sm transition" />
+          <span *ngIf="submitted && contactForm.get('name')?.errors?.['required']" class="text-xs text-rose-500 mt-1 block">Name is required.</span>
+        </label>
+        <label class="block">
+          <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Email</span>
+          <input type="email" formControlName="email" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus:border-amber-400 focus:outline-none text-sm transition" />
+          <span *ngIf="submitted && contactForm.get('email')?.errors?.['required']" class="text-xs text-rose-500 mt-1 block">Email is required.</span>
+          <span *ngIf="submitted && contactForm.get('email')?.errors?.['email']" class="text-xs text-rose-500 mt-1 block">Invalid email format.</span>
+        </label>
+      </div>
+      <label class="block">
+        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Phone</span>
+        <input type="tel" formControlName="phone" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus:border-amber-400 focus:outline-none text-sm transition" />
+        <span *ngIf="submitted && contactForm.get('phone')?.errors?.['required']" class="text-xs text-rose-500 mt-1 block">Phone is required.</span>
+      </label>
+      <label class="block">
+        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Message</span>
+        <textarea formControlName="message" rows="5" class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus:border-amber-400 focus:outline-none text-sm transition"></textarea>
+        <span *ngIf="submitted && contactForm.get('message')?.errors?.['required']" class="text-xs text-rose-500 mt-1 block">Message is required.</span>
+      </label>
+      <button type="submit" class="w-full text-slate-950 font-bold py-3 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 shadow-lg shadow-orange-500/20 transition hover:scale-102">Send Message</button>
+      
+      <div *ngIf="success" class="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 border border-emerald-200 font-medium">Thank you! Your message has been sent successfully.</div>
+      <div *ngIf="error" class="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700 border border-rose-200 font-medium">Submission failed. Please try again.</div>
+    </form>
+  </div>
+</section>

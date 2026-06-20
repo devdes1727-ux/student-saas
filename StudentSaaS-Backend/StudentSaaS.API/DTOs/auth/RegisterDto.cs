@@ -12,10 +12,18 @@ public class RegisterDto
     public string Email { get; set; } = string.Empty;
 
     [Required]
+    public string Phone { get; set; } = string.Empty;
+
+    [Required]
     [MinLength(6)]
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    public string Role { get; set; } = "InstituteAdmin";
-    public int InstituteId { get; set; }
+    [Compare("Password", ErrorMessage = "Passwords do not match")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+
+    [Required]
+    public string Role { get; set; } = "Student"; // Default to Student, can be Admin/Teacher/Student
+
+    public int? InstituteId { get; set; }
 }

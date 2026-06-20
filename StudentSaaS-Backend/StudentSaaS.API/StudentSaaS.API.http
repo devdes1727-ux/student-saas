@@ -1,4 +1,4 @@
-@StudentSaaS.API_HostAddress = http://localhost:5164
+@StudentSaaS.API_HostAddress = http://localhost:8080
 
 GET {{StudentSaaS.API_HostAddress}}/weatherforecast/
 Accept: application/json

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
-    private apiUrl = 'http://localhost:5164/api/auth';
+    private apiUrl = 'http://localhost:8080/api/auth';
 
     constructor(private http: HttpClient) { }
 
@@ -29,10 +29,12 @@ export class AuthService {
     }
 
     getToken(): string | null {
+        if (typeof window === 'undefined') return null;
         return localStorage.getItem('token');
     }
 
     getCurrentUser(): any {
+        if (typeof window === 'undefined') return null;
         const user = localStorage.getItem('user');
         return user ? JSON.parse(user) : null;
     }

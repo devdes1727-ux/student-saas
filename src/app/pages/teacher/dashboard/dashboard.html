@@ -1,0 +1,118 @@
+<div class="p-6 space-y-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Teacher Console</h1>
+      <p class="text-xs text-slate-500 mt-1">Class monitoring, student attendance, and notifications.</p>
+    </div>
+    <span class="inline-flex rounded-full bg-indigo-50 border border-indigo-200 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-indigo-700">Staff Account</span>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-12 text-slate-500 font-medium animate-pulse">
+    Loading teacher console dataset...
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <!-- Notifications alert bar -->
+    <div *ngIf="notifications.length > 0" class="rounded-2xl border border-amber-200 bg-amber-50/50 p-4 space-y-3">
+      <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider border-b border-amber-100 pb-2">🔔 Staff Notifications</h4>
+      <div class="space-y-2">
+        <div *ngFor="let notif of notifications" class="flex items-center justify-between bg-white border border-amber-100 px-3.5 py-2.5 rounded-xl shadow-sm text-xs animate-fade-in">
+          <div>
+            <span class="font-semibold text-slate-900">{{ notif.title }}</span>: 
+            <span class="text-slate-600 ml-1">{{ notif.message }}</span>
+          </div>
+          <button (click)="dismissNotification(notif.id)" class="text-slate-400 hover:text-slate-950 font-bold ml-4">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-soft">
+      <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Quick Operations</h3>
+      <div class="flex flex-wrap gap-3">
+        <a routerLink="/teacher/attendance" class="inline-flex items-center gap-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white px-5 py-3.5 text-xs font-bold transition shadow">
+          <span>📅</span> Record Attendance Register
+        </a>
+        <a routerLink="/teacher/students" class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100 px-5 py-3.5 text-xs font-bold text-slate-700 transition">
+          <span>🎓</span> View My Students
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats Cards Grid -->
+    <div class="grid gap-6 sm:grid-cols-3">
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft flex items-center gap-4">
+        <div class="h-12 w-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-xl flex-shrink-0">🎓</div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Assigned Students</p>
+          <h3 class="text-2xl font-black text-slate-900 mt-1">{{ stats.totalStudents }}</h3>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft flex items-center gap-4">
+        <div class="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-xl flex-shrink-0">✓</div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Present Today</p>
+          <h3 class="text-2xl font-black text-slate-900 mt-1">{{ stats.presentToday }}</h3>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft flex items-center gap-4">
+        <div class="h-12 w-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-xl flex-shrink-0">✕</div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">Absent Today</p>
+          <h3 class="text-2xl font-black text-slate-900 mt-1">{{ stats.absentToday }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-column Lower Section -->
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- Assigned Batches -->
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft space-y-4">
+        <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-3">My Assigned Batches</h3>
+        <div class="divide-y divide-slate-100">
+          <div *ngFor="let b of batches" class="py-3 flex items-center justify-between text-xs">
+            <div>
+              <div class="font-bold text-slate-900">{{ b.batchName }}</div>
+              <div class="text-slate-500 mt-0.5">Course: {{ b.courseName }}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-slate-500 font-medium">{{ b.startTime }} - {{ b.endTime }}</div>
+              <span class="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700 uppercase tracking-wider mt-1" *ngIf="b.isActive">Active</span>
+            </div>
+          </div>
+          <div *ngIf="batches.length === 0" class="py-6 text-center text-slate-400 text-xs">
+            No active batches assigned. Please contact the administrator.
+          </div>
+        </div>
+      </div>
+
+      <!-- Operational logs -->
+      <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft space-y-4">
+        <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-3">Recent Class Logs</h3>
+        <div class="space-y-4">
+          <div *ngFor="let act of recentActivities" class="flex gap-3 text-xs">
+            <div class="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 font-bold"
+                 [class.bg-indigo-50]="act.type === 'Admission'"
+                 [class.text-indigo-700]="act.type === 'Admission'"
+                 [class.bg-emerald-50]="act.type === 'Payment'"
+                 [class.text-emerald-700]="act.type === 'Payment'">
+              {{ act.type === 'Admission' ? '👤' : '₹' }}
+            </div>
+            <div class="flex-grow">
+              <h4 class="font-bold text-slate-900 leading-snug">{{ act.title }}</h4>
+              <p class="text-slate-500 text-[10px] mt-0.5">{{ act.description }}</p>
+              <p class="text-slate-400 text-[9px] mt-0.5">{{ act.timestamp | date:'shortTime' }}</p>
+            </div>
+          </div>
+          <div *ngIf="recentActivities.length === 0" class="text-center py-4 text-slate-400 text-xs">
+            No activity logs recorded.
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -10,7 +10,7 @@ public class CreateCourseDto
     [Required]
     public string CourseCode { get; set; } = string.Empty;
 
-    [Range(1, 1000000)]
+    [Range(0, 1000000)]
     public decimal Fee { get; set; }
 
     [Range(1, 120)]
@@ -18,6 +18,8 @@ public class CreateCourseDto
 
     [Required]
     public string Description { get; set; } = string.Empty;
+
+    public string Category { get; set; } = string.Empty;
 
     public int InstituteId { get; set; }
 }

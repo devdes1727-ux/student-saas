@@ -1,50 +1,97 @@
 <div class="sidebar">
 
-    <div class="brand">
-        <div class="logo-circle">E</div>
-        <div>
-            <h3>EduSaaS</h3>
-            <span>Institute ERP</span>
-        </div>
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-logo">🎨</div>
+    <div class="brand-text">
+      <h3>ArtClass SaaS</h3>
+      <span>Drawing School ERP</span>
     </div>
+  </div>
 
-    <div class="user-card">
-        <div class="avatar">
-            {{ user?.name?.charAt(0) || 'A' }}
-        </div>
-
-        <div>
-            <div class="user-name">{{user?.name}}</div>
-            <div class="user-role">{{user?.role}}</div>
-        </div>
+  <!-- User Card -->
+  <div class="sidebar-user" *ngIf="user">
+    <div class="user-avatar">{{ user?.name?.charAt(0)?.toUpperCase() || 'U' }}</div>
+    <div class="user-info">
+      <div class="user-name">{{ user?.name || 'User' }}</div>
+      <div class="user-role">{{ user?.role }}</div>
     </div>
+  </div>
 
-    <nav>
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
 
-        <a routerLink="/dashboard" routerLinkActive="active">
-            📊 Dashboard
-        </a>
+    <!-- Always visible -->
+    <div class="nav-section-label">Overview</div>
+    <a [routerLink]="[prefix + '/dashboard']" routerLinkActive="active">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
 
-        <a routerLink="/students" routerLinkActive="active">
-            🎓 Students
-        </a>
+    <!-- Admin & Teacher -->
+    <ng-container *ngIf="isAdminOrTeacher">
+      <div class="nav-section-label">Academics</div>
+      <a [routerLink]="[prefix + '/students']" routerLinkActive="active">
+        <span class="nav-icon">🎓</span> Students
+      </a>
+      <a *ngIf="isAdmin" [routerLink]="[prefix + '/staff']" routerLinkActive="active">
+        <span class="nav-icon">👨‍🏫</span> Staff
+      </a>
+      <a *ngIf="isAdmin" [routerLink]="[prefix + '/courses']" routerLinkActive="active">
+        <span class="nav-icon">📚</span> Courses
+      </a>
+      <a *ngIf="isAdmin" [routerLink]="[prefix + '/batches']" routerLinkActive="active">
+        <span class="nav-icon">🏷️</span> Batches
+      </a>
+      <a [routerLink]="[prefix + '/attendance']" routerLinkActive="active">
+        <span class="nav-icon">📅</span> Attendance
+      </a>
+    </ng-container>
 
-        <a routerLink="/staff" routerLinkActive="active">
-            👨‍🏫 Staff
-        </a>
+    <!-- Admin only -->
+    <ng-container *ngIf="isAdmin">
+      <div class="nav-section-label">Finance & Media</div>
+      <a [routerLink]="[prefix + '/payments']" routerLinkActive="active">
+        <span class="nav-icon">💳</span> Payments
+      </a>
+      <a [routerLink]="[prefix + '/gallery']" routerLinkActive="active">
+        <span class="nav-icon">🖼️</span> Gallery
+      </a>
+      <a [routerLink]="[prefix + '/events']" routerLinkActive="active">
+        <span class="nav-icon">📆</span> Events
+      </a>
+      <a [routerLink]="[prefix + '/testimonials']" routerLinkActive="active">
+        <span class="nav-icon">⭐</span> Testimonials
+      </a>
+      <div class="nav-section-label">Reports & Config</div>
+      <a [routerLink]="[prefix + '/reports']" routerLinkActive="active">
+        <span class="nav-icon">📈</span> Reports
+      </a>
+      <a [routerLink]="[prefix + '/settings']" routerLinkActive="active">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+    </ng-container>
 
-        <a routerLink="/courses" routerLinkActive="active">
-            📚 Courses
-        </a>
+    <!-- Student only: own attendance -->
+    <ng-container *ngIf="isStudent">
+      <div class="nav-section-label">My Account</div>
+      <a routerLink="/attendance" routerLinkActive="active">
+        <span class="nav-icon">📅</span> My Attendance
+      </a>
+      <a routerLink="/payments" routerLinkActive="active">
+        <span class="nav-icon">💳</span> My Payments
+      </a>
+    </ng-container>
 
-        <a routerLink="/attendance" routerLinkActive="active">
-            📅 Attendance
-        </a>
+  </nav>
 
-    </nav>
-
+  <!-- Bottom actions -->
+  <div class="sidebar-bottom">
+    <a class="sidebar-home-link" routerLink="/home">
+      <span class="nav-icon">🏠</span> View Public Site
+    </a>
     <button class="logout-btn" (click)="logout()">
-        Logout
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
     </button>
+  </div>
 
 </div>

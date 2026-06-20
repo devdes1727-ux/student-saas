@@ -1,0 +1,83 @@
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <!-- Brand -->
+    <a routerLink="/" class="flex items-center gap-2">
+      <span class="text-2xl">🎨</span>
+      <div class="flex flex-col">
+        <span class="font-bold text-slate-900 tracking-tight leading-none text-lg">Sivaram Kalaikoodam</span>
+        <span class="text-xs text-amber-600 font-medium tracking-wide uppercase mt-0.5">Art Academy</span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="hidden md:flex items-center gap-6">
+      <a routerLink="/home" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Home</a>
+      <a routerLink="/about" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">About</a>
+      <a routerLink="/courses" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Courses</a>
+      <a routerLink="/gallery" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Gallery</a>
+      <a routerLink="/events" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Events</a>
+      <a routerLink="/testimonials" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Testimonials</a>
+      <a routerLink="/contact" routerLinkActive="text-amber-600 font-semibold" class="text-sm font-medium text-slate-600 hover:text-amber-500 transition">Contact</a>
+      <a routerLink="/admission-enquiry" class="inline-flex justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-md hover:from-amber-600 hover:to-orange-600 transition">Enquire Now</a>
+    </nav>
+
+    <!-- Mobile menu button -->
+    <button (click)="toggleMenu()" class="md:hidden p-2 text-slate-600 hover:text-slate-950 focus:outline-none" aria-label="Toggle Menu">
+      <span class="text-2xl">{{ isMenuOpen ? '✕' : '☰' }}</span>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div *ngIf="isMenuOpen" class="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2 animate-fade-in">
+    <a routerLink="/home" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Home</a>
+    <a routerLink="/about" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">About</a>
+    <a routerLink="/courses" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Courses</a>
+    <a routerLink="/gallery" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Gallery</a>
+    <a routerLink="/events" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Events</a>
+    <a routerLink="/testimonials" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Testimonials</a>
+    <a routerLink="/contact" (click)="toggleMenu()" class="block px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-amber-500 rounded-lg">Contact</a>
+    <a routerLink="/admission-enquiry" (click)="toggleMenu()" class="block text-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 text-base font-semibold text-white shadow-md">Enquire Now</a>
+  </div>
+</header>
+
+<main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 min-h-[70vh]">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="border-t border-slate-200 bg-slate-900 text-white mt-16 py-12">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <div class="flex items-center gap-2 text-white">
+        <span class="text-2xl">🎨</span>
+        <span class="font-bold text-lg tracking-tight">Sivaram Kalaikoodam</span>
+      </div>
+      <p class="mt-4 text-sm text-slate-400">Bringing professional art training and awareness campaigns to students in Tirunelveli since 2014.</p>
+    </div>
+    <div>
+      <h3 class="text-sm font-semibold text-amber-500 uppercase tracking-wider">Quick Links</h3>
+      <ul class="mt-4 space-y-2 text-sm text-slate-400">
+        <li><a routerLink="/home" class="hover:text-amber-400 transition">Home</a></li>
+        <li><a routerLink="/about" class="hover:text-amber-400 transition">About Us</a></li>
+        <li><a routerLink="/courses" class="hover:text-amber-400 transition">Our Courses</a></li>
+        <li><a routerLink="/gallery" class="hover:text-amber-400 transition">Gallery</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="text-sm font-semibold text-amber-500 uppercase tracking-wider">Contact Info</h3>
+      <ul class="mt-4 space-y-2 text-sm text-slate-400">
+        <li>📍 New Zion Nagar, 5/5, Opp. STC, Tirunelveli, TN 627007</li>
+        <li>📞 +91 93457 23852</li>
+        <li>✉️ contact&#64;sivaramkalaikoodam.com</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="text-sm font-semibold text-amber-500 uppercase tracking-wider">Follow Us</h3>
+      <div class="flex gap-4 mt-4">
+        <a href="#" class="text-slate-400 hover:text-white transition text-xl"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="text-slate-400 hover:text-white transition text-xl"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-slate-400 hover:text-white transition text-xl"><i class="fab fa-twitter"></i></a>
+      </div>
+      <p class="mt-6 text-xs text-slate-500">&copy; 2026 Sivaram Kalaikoodam. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

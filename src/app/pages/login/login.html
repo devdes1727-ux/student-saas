@@ -1,36 +1,54 @@
-<div class="login-container">
+<div class="login-page">
+  <div class="auth-card">
 
-    <div class="login-card">
-
-        <h2>Student SaaS</h2>
-        <p>Institute Management System</p>
-
-        <input
-            type="email"
-            placeholder="Email"
-            [(ngModel)]="email">
-
-        <input
-            type="password"
-            placeholder="Password"
-            [(ngModel)]="password">
-
-        <button
-            (click)="login()"
-            [disabled]="loading">
-
-            {{ loading ? 'Signing In...' : 'Login' }}
-
-        </button>
-
-        <div
-            *ngIf="errorMessage"
-            class="error">
-
-            {{ errorMessage }}
-
-        </div>
-
+    <!-- Logo -->
+    <div class="auth-logo">
+      <div class="auth-logo-circle">🎨</div>
+      <div class="auth-logo-text">
+        <h1>ArtClass SaaS</h1>
+        <span>Drawing School Management</span>
+      </div>
     </div>
 
+    <!-- Title -->
+    <div class="auth-title">
+      <h2>Welcome back</h2>
+      <p>Sign in to your account to continue</p>
+    </div>
+
+    <!-- Form -->
+    <form class="auth-form" (submit)="login(); $event.preventDefault()">
+
+      <div class="auth-input-group">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="admin@drawingclass.com"
+               [(ngModel)]="email" name="email" autocomplete="email">
+      </div>
+
+      <div class="auth-input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••"
+               [(ngModel)]="password" name="password" autocomplete="current-password">
+      </div>
+
+      <div class="auth-error" *ngIf="errorMessage">
+        <i class="fa-solid fa-circle-xmark"></i>
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="auth-btn" [disabled]="loading">
+        <span class="spinner" *ngIf="loading"></span>
+        <i class="fa-solid fa-right-to-bracket" *ngIf="!loading"></i>
+        {{ loading ? 'Signing In...' : 'Sign In' }}
+      </button>
+
+    </form>
+
+    <div class="auth-links">
+      <a (click)="goForgot()">Forgot your password?</a>
+      <div class="divider"><span>or</span></div>
+      <a (click)="goRegister()">Don't have an account? Register</a>
+    </div>
+
+  </div>
 </div>

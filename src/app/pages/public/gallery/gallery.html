@@ -1,0 +1,35 @@
+<section class="rounded-[2rem] bg-white p-8 border border-slate-200 shadow-soft sm:p-10 animate-fade-in">
+  <span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Art Gallery</span>
+  <h1 class="text-slate-950 font-bold text-3xl tracking-tight sm:text-4xl mt-4 leading-tight">Vibrant canvases, sketches, and certificates.</h1>
+  <p class="mt-4 text-base text-slate-600 sm:text-lg">Explore the visual achievements of our talented young artists, and highlights from district competitions and murals.</p>
+</section>
+
+<!-- Filter buttons -->
+<div class="mt-8 flex flex-wrap gap-2 items-center justify-center">
+  <button *ngFor="let cat of categories" 
+          (click)="filterCategory(cat)"
+          [class.bg-slate-900]="activeCategory === cat"
+          [class.text-white]="activeCategory === cat"
+          [class.bg-slate-100]="activeCategory !== cat"
+          [class.text-slate-700]="activeCategory !== cat"
+          class="px-4 py-2 text-xs font-semibold rounded-full transition hover:scale-102">
+    {{ cat }}
+  </button>
+</div>
+
+<div *ngIf="loading" class="mt-12 text-center text-slate-500 font-medium animate-pulse">
+  Loading gallery...
+</div>
+
+<!-- Image Grid -->
+<section *ngIf="!loading" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <article *ngFor="let image of filtered" class="overflow-hidden rounded-3xl bg-white border border-slate-200 shadow-soft hover:shadow-premium transition">
+    <div class="h-56 overflow-hidden bg-slate-50">
+      <img src="{{ image.imageUrl }}" alt="{{ image.title }}" class="h-full w-full object-cover hover:scale-105 transition duration-500" />
+    </div>
+    <div class="p-4">
+      <h3 class="font-bold text-slate-900 text-sm leading-snug">{{ image.title }}</h3>
+      <p class="mt-1.5 text-xs text-amber-600 font-medium tracking-wide uppercase">{{ image.category }}</p>
+    </div>
+  </article>
+</section>

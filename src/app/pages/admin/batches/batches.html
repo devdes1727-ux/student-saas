@@ -1,0 +1,115 @@
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Class Batches</h1>
+      <p class="text-xs text-slate-500 mt-1">Configure study schedules, assign mentors, and monitor student counts.</p>
+    </div>
+    <button (click)="openNewForm()" class="inline-flex justify-center rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-5 py-3 transition shadow">
+      + Create Batch
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-12 text-slate-500 font-medium animate-pulse">
+    Loading batch data...
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <!-- Batches Table -->
+    <div class="rounded-3xl border border-slate-200 bg-white shadow-soft overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+              <th class="p-4">Batch Name</th>
+              <th class="p-4">Linked Course</th>
+              <th class="p-4">Assigned Teacher</th>
+              <th class="p-4">Timing</th>
+              <th class="p-4 text-center">Status</th>
+              <th class="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs">
+            <tr *ngFor="let b of batches" class="hover:bg-slate-50/50 transition">
+              <td class="p-4 font-bold text-slate-900">{{ b.batchName }}</td>
+              <td class="p-4 text-slate-600">{{ b.courseName || 'N/A' }}</td>
+              <td class="p-4 text-slate-600 font-medium">{{ b.teacherName || 'Not Assigned' }}</td>
+              <td class="p-4 text-slate-500">{{ b.startTime }} - {{ b.endTime }}</td>
+              <td class="p-4 text-center">
+                <span class="inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+                      [class.bg-emerald-50]="b.isActive" [class.text-emerald-700]="b.isActive"
+                      [class.bg-slate-100]="!b.isActive" [class.text-slate-500]="!b.isActive">
+                  {{ b.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="p-4 text-right space-x-2">
+                <button (click)="openEditForm(b)" class="rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-semibold px-2.5 py-1.5 transition text-[10px]">Edit</button>
+                <button (click)="deleteBatch(b.id)" class="rounded-lg bg-rose-50 border border-rose-100 hover:bg-rose-100 text-rose-800 font-bold px-2.5 py-1.5 transition text-[10px]">Delete</button>
+              </td>
+            </tr>
+            <tr *ngIf="batches.length === 0">
+              <td colspan="6" class="p-8 text-center text-slate-400 font-medium">No active batches configured. Click "+ Create Batch" to add one.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Creation/Editing Form Modal Backdrop -->
+    <div *ngIf="showForm" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4 animate-fade-in">
+      <!-- Modal Box -->
+      <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">{{ editingId ? 'Edit Batch details' : 'Create new Batch' }}</h2>
+          <p class="text-xs text-slate-500 mt-1">Specify timing, course links, and instructor assignment.</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Batch Name -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Batch Name *</label>
+            <input type="text" [(ngModel)]="formModel.batchName" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500 transition" placeholder="e.g. Saturday Morning Beginners" />
+          </div>
+
+          <!-- Course selection -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Linked Course *</label>
+            <select [(ngModel)]="formModel.courseId" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition">
+              <option *ngFor="let c of courses" [value]="c.id">{{ c.courseName }}</option>
+            </select>
+          </div>
+
+          <!-- Teacher selection -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Assigned Teacher *</label>
+            <select [(ngModel)]="formModel.teacherId" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition">
+              <option *ngFor="let t of teachers" [value]="t.id">{{ t.name }}</option>
+            </select>
+          </div>
+
+          <!-- Timings -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Start Time *</label>
+              <input type="time" [(ngModel)]="formModel.startTime" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">End Time *</label>
+              <input type="time" [(ngModel)]="formModel.endTime" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition" />
+            </div>
+          </div>
+
+          <!-- Active check -->
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="isActive" [(ngModel)]="formModel.isActive" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500" />
+            <label for="isActive" class="text-xs text-slate-700 font-semibold select-none">Mark Batch as active</label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button (click)="closeForm()" class="rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold px-4 py-2.5 transition text-xs">Cancel</button>
+          <button (click)="saveBatch()" class="rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 transition text-xs">Save</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

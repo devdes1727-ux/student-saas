@@ -1,14 +1,1 @@
-.app-shell {
-    display: flex;
-    height: 100vh;
-    background: #f8fafc;
-    font-family: Inter, Arial, sans-serif;
-}
-
-/* main content area */
-.main-area {
-    margin-left: 260px;
-    padding: 24px;
-    width: 100%;
-    overflow-y: auto;
-}
+/* Root component styles */

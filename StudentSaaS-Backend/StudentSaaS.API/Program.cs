@@ -4,8 +4,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using StudentSaaS.API.Data;
 using StudentSaaS.API.Services;
+using StudentSaaS.API.Helpers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Controllers
 builder.Services.AddControllers();
@@ -21,6 +31,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // JWT Service
 builder.Services.AddScoped<JwtService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -52,6 +65,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Global Exception Handler
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+// Seed Database
+await DbInitializer.SeedAsync(app.Services);
+
 // Swagger (ONLY DEV)
 if (app.Environment.IsDevelopment())
 {
@@ -60,6 +79,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

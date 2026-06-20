@@ -1,0 +1,28 @@
+/* Attendance radio buttons */
+.att-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+
+.att-radio input[type="radio"] { display: none; }
+
+.att-radio:hover { border-color: var(--success); }
+.att-radio.active { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+
+.att-radio.absent:hover { border-color: var(--danger); }
+.att-radio.absent.active { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+
+.att-radio.late:hover { border-color: var(--warning); }
+.att-radio.late.active { background: var(--warning-bg); border-color: var(--warning); color: var(--warning); }
+
+.att-radio.leave:hover { border-color: var(--info); }
+.att-radio.leave.active { background: var(--info-bg); border-color: var(--info); color: var(--info); }

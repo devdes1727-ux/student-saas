@@ -14,34 +14,38 @@ import { SessionService } from '../../core/services/session.service';
 export class Sidebar implements OnInit {
 
   private platformId = inject(PLATFORM_ID);
+  user: any = null;
 
-  user: any = {};
-
-  constructor(
-  private router: Router,
-  public session: SessionService
-) {}
+  constructor(private router: Router, public session: SessionService) {}
 
   ngOnInit() {
-
     if (isPlatformBrowser(this.platformId)) {
-
-      const userData = localStorage.getItem('user');
-
-      if (userData) {
-          this.user = this.session.getUser();
-
-      }
-
+      this.user = this.session.getUser();
     }
   }
 
+  get role(): string { return this.user?.role || ''; }
+
+  get prefix(): string {
+    if (this.isAdmin) return '/admin';
+    if (this.role === 'Teacher') return '/teacher';
+    return '';
+  }
+
+  get isAdmin(): boolean {
+    return this.role === 'Admin' || this.role === 'InstituteAdmin' || this.role === 'SuperAdmin';
+  }
+
+  get isAdminOrTeacher(): boolean {
+    return this.isAdmin || this.role === 'Teacher';
+  }
+
+  get isStudent(): boolean {
+    return this.role === 'Student';
+  }
+
   logout() {
-
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('user');
-    }
-
+    this.session.logout();
     this.router.navigate(['/login']);
   }
 }

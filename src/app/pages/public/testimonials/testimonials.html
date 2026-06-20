@@ -1,0 +1,29 @@
+<section class="rounded-[2rem] bg-white p-8 border border-slate-200 shadow-soft sm:p-10 animate-fade-in">
+  <span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Testimonials</span>
+  <h1 class="text-slate-950 font-bold text-3xl tracking-tight sm:text-4xl mt-4 leading-tight">Hear from our students and parents.</h1>
+  <p class="mt-4 text-base text-slate-600 sm:text-lg">Discover why families in Tirunelveli choose Sivaram Kalaikoodam for their children’s artistic development.</p>
+</section>
+
+<div *ngIf="loading" class="mt-12 text-center text-slate-500 font-medium animate-pulse">
+  Loading reviews...
+</div>
+
+<section *ngIf="!loading" class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <article *ngFor="let item of testimonials" class="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft hover:shadow-premium transition flex flex-col justify-between">
+    <div>
+      <div class="flex items-center gap-1 text-amber-500 text-sm">
+        <span *ngFor="let star of [1, 2, 3, 4, 5]">★</span>
+      </div>
+      <p class="mt-4 text-sm italic text-slate-600 leading-relaxed">"{{ item.message }}"</p>
+    </div>
+    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center gap-3">
+      <div class="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center font-bold text-amber-700 text-sm">
+        {{ item.name.charAt(0).toUpperCase() }}
+      </div>
+      <div>
+        <p class="font-bold text-slate-900 text-sm">{{ item.name }}</p>
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">{{ item.role }}</p>
+      </div>
+    </div>
+  </article>
+</section>

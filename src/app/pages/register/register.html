@@ -1,0 +1,66 @@
+<div class="login-page">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-circle">🎨</div>
+      <div class="auth-logo-text">
+        <h1>ArtClass SaaS</h1>
+        <span>Drawing School Management</span>
+      </div>
+    </div>
+
+    <div class="auth-title">
+      <h2>Create Account</h2>
+      <p>Join the Art Academy management system</p>
+    </div>
+
+    <form class="auth-form" (submit)="register(); $event.preventDefault()">
+
+      <div class="auth-input-group">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" placeholder="Your full name"
+               [(ngModel)]="name" name="name">
+      </div>
+
+      <div class="auth-input-group">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="your@email.com"
+               [(ngModel)]="email" name="email">
+      </div>
+
+      <div class="auth-input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Min. 6 characters"
+               [(ngModel)]="password" name="password">
+      </div>
+
+      <div class="auth-input-group">
+        <label for="role">Account Type</label>
+        <select id="role" [(ngModel)]="role" name="role">
+          <option value="Student">Student</option>
+          <option value="Teacher">Teacher / Staff</option>
+        </select>
+      </div>
+
+      <div class="auth-error" *ngIf="error">
+        <i class="fa-solid fa-circle-xmark"></i> {{ error }}
+      </div>
+
+      <div class="auth-success" *ngIf="success">
+        <i class="fa-solid fa-circle-check"></i> {{ success }}
+      </div>
+
+      <button type="submit" class="auth-btn" [disabled]="loading || !!success">
+        <span class="spinner" *ngIf="loading"></span>
+        <i class="fa-solid fa-user-plus" *ngIf="!loading"></i>
+        {{ loading ? 'Creating Account...' : 'Create Account' }}
+      </button>
+
+    </form>
+
+    <div class="auth-links">
+      <a routerLink="/login">Already have an account? Sign in</a>
+    </div>
+
+  </div>
+</div>

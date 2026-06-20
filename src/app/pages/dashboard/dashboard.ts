@@ -1,49 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardService } from '../../core/services/dashboard.service';
+import { RouterModule } from '@angular/router';
+import { ApiService } from '../../core/services/api.service';
+import { SessionService } from '../../core/services/session.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 export class Dashboard implements OnInit {
 
-  stats = {
-    totalInstitutes: 0,
-    totalStudents: 0,
-    totalStaff: 0,
-    totalCourses: 0,
-    monthlyRevenue: 0
-  };
-
+  stats: any = {};
   recentPayments: any[] = [];
-
-  dueStudents: string[] = [];
+  overdueStudents: any[] = [];
+  loading = true;
 
   constructor(
-    private dashboardService: DashboardService
+    private api: ApiService,
+    public session: SessionService,
+    private cdr: ChangeDetectorRef,
+    private toast: ToastService
   ) { }
 
-  ngOnInit(): void {
-    this.loadDashboard();
+  ngOnInit() { this.load(); }
+
+  load() {
+    this.loading = true;
+    this.api.getDashboard().subscribe({
+      next: (data: any) => {
+        this.stats = data;
+        this.recentPayments = data.recentPayments || [];
+        this.overdueStudents = data.overdueStudents || [];
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.toast.error('Failed to load dashboard');
+        this.loading = false;
+      }
+    });
   }
 
-  loadDashboard() {
+  get role() { return this.session.getRole(); }
+  get isAdmin() {
+    const r = this.role;
+    return r === 'Admin' || r === 'InstituteAdmin' || r === 'SuperAdmin';
+  }
 
-    this.dashboardService.getDashboard()
-      .subscribe({
-        next: (data) => {
-
-          this.stats = data;
-
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
-
+  formatCurrency(v: number) {
+    return '₹' + (v || 0).toLocaleString('en-IN');
   }
 }

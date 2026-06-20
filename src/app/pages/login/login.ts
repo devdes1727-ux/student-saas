@@ -12,60 +12,41 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./login.css'],
 })
 export class Login {
-
   email = '';
   password = '';
   loading = false;
   errorMessage = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-
     if (!this.email || !this.password) {
-      this.errorMessage = 'Enter Email and Password';
+      this.errorMessage = 'Please enter your email and password.';
       return;
     }
-
     this.loading = true;
     this.errorMessage = '';
 
-    this.authService.login({
-      email: this.email,
-      password: this.password
-    }).subscribe({
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: (res: any) => {
-
-        // ✅ CENTRALIZED SESSION SAVE
         this.authService.saveSession(res);
-
-        const role = res?.user?.role;
-
-        // ✅ CLEAN ROLE ROUTING
-        switch (role) {
-          case 'SuperAdmin':
-            this.router.navigate(['/dashboard']);
-            break;
-
-          case 'InstituteAdmin':
-            this.router.navigate(['/dashboard']);
-            break;
-
-          default:
-            this.router.navigate(['/dashboard']);
-            break;
+        const role = res.user?.role;
+        if (role === 'Admin' || role === 'InstituteAdmin' || role === 'SuperAdmin') {
+          this.router.navigate(['/admin/dashboard']);
+        } else if (role === 'Teacher') {
+          this.router.navigate(['/teacher/dashboard']);
+        } else {
+          this.router.navigate(['/']);
         }
-
         this.loading = false;
       },
-
-      error: (err) => {
-        this.errorMessage = 'Invalid Email or Password';
+      error: () => {
+        this.errorMessage = 'Invalid email or password. Please try again.';
         this.loading = false;
       }
     });
   }
+
+  goRegister() { this.router.navigate(['/register']); }
+  goForgot() { this.router.navigate(['/forgot-password']); }
 }

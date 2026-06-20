@@ -1,0 +1,100 @@
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Testimonials Console</h1>
+      <p class="text-xs text-slate-500 mt-1">Manage parent and student feedback appearing on the public website homepage.</p>
+    </div>
+    <button (click)="openNewForm()" class="inline-flex justify-center rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs px-5 py-3 transition shadow">
+      + Add Testimonial
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-12 text-slate-500 font-medium animate-pulse">
+    Loading reviews...
+  </div>
+
+  <ng-container *ngIf="!loading">
+    <!-- Grid of reviews -->
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let item of testimonials" class="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft flex flex-col justify-between hover:shadow-premium transition">
+        <div>
+          <!-- Star ratings -->
+          <div class="flex items-center gap-0.5 text-amber-500 text-sm">
+            <span *ngFor="let star of [1,2,3,4,5]" [class.text-amber-200]="star > item.rating">★</span>
+          </div>
+          <p class="text-xs text-slate-600 italic mt-3 leading-relaxed">"{{ item.message }}"</p>
+        </div>
+        <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-xs">
+              {{ item.name.charAt(0).toUpperCase() }}
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-950 text-xs leading-none">{{ item.name }}</h4>
+              <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5 block">{{ item.role }}</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button (click)="openEditForm(item)" class="rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold px-2.5 py-1.5 transition text-[10px]">Edit</button>
+            <button (click)="deleteTestimonial(item.id)" class="rounded-lg bg-rose-50 border border-rose-100 hover:bg-rose-100 text-rose-800 font-bold px-2.5 py-1.5 transition text-[10px]">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="testimonials.length === 0" class="col-span-full border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center text-slate-400">
+        <p class="text-lg">⭐</p>
+        <p class="text-xs font-semibold mt-2">No testimonials registered yet.</p>
+        <button (click)="openNewForm()" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2 transition text-xs">Add your first review</button>
+      </div>
+    </div>
+
+    <!-- Testimonial form modal backdrop -->
+    <div *ngIf="showForm" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4 animate-fade-in">
+      <div class="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">{{ editingId ? 'Modify feedback details' : 'Add feedback review' }}</h2>
+          <p class="text-xs text-slate-500 mt-1">Configure user details, testimonial message and rating value.</p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Name -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Reviewer Name *</label>
+            <input type="text" [(ngModel)]="formModel.name" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:border-amber-500 focus:bg-white focus:outline-none transition" placeholder="e.g. Meera Sundaram" />
+          </div>
+
+          <!-- Role -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Reviewer Designation / Role</label>
+            <input type="text" [(ngModel)]="formModel.role" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition" placeholder="e.g. Parent of 5th Grade Student" />
+          </div>
+
+          <!-- Rating -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Star Rating *</label>
+            <select [(ngModel)]="formModel.rating" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition">
+              <option *ngFor="let rate of ratings" [value]="rate">★ {{ rate }} Stars</option>
+            </select>
+          </div>
+
+          <!-- Image Asset URL -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Avatar Image Link</label>
+            <input type="text" [(ngModel)]="formModel.imageUrl" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition" placeholder="e.g. assets/reviewer.png" />
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Testimonial Message *</label>
+            <textarea [(ngModel)]="formModel.message" rows="4" class="mt-1.5 block w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition" placeholder="Paste student feedback here..."></textarea>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button (click)="closeForm()" class="rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold px-4 py-2.5 transition text-xs">Cancel</button>
+          <button (click)="saveTestimonial()" class="rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 transition text-xs">Save</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

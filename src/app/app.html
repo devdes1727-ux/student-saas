@@ -1,7 +1,18 @@
-<div class="app-shell">
-  <app-sidebar></app-sidebar>
+<router-outlet></router-outlet>
 
-  <div class="main-area">
-    <router-outlet></router-outlet>
+<!-- Global Toast Notifications -->
+<div class="toast-container">
+  <div *ngFor="let toast of toastService.toasts" class="toast animate-fade-in" 
+       [class.toast-success]="toast.type === 'success'" 
+       [class.toast-warning]="toast.type === 'warning'" 
+       [class.toast-error]="toast.type === 'error'" 
+       [class.toast-info]="toast.type === 'info'">
+    <i class="fa-solid" 
+       [class.fa-circle-check]="toast.type === 'success'" 
+       [class.fa-triangle-exclamation]="toast.type === 'warning'" 
+       [class.fa-circle-xmark]="toast.type === 'error'" 
+       [class.fa-circle-info]="toast.type === 'info'"></i>
+    <span>{{ toast.message }}</span>
+    <button (click)="toastService.remove(toast.id)" style="background: none; border: none; color: inherit; cursor: pointer; margin-left: auto; font-size: 16px; padding: 0 4px;">&times;</button>
   </div>
 </div>

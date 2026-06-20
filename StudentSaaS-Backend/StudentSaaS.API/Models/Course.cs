@@ -1,5 +1,6 @@
 namespace StudentSaaS.API.Models;
 
+using System;
 using System.ComponentModel.DataAnnotations;
 
 public class Course
@@ -19,7 +20,15 @@ public class Course
 
     public int DurationMonths { get; set; }
 
+    public string Category { get; set; } = string.Empty;
+
     public bool IsActive { get; set; } = true;
 
     public int InstituteId { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
+    public string? CreatedBy { get; set; }
+    public string? UpdatedBy { get; set; }
 }

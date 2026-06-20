@@ -20,23 +20,54 @@ public class CoursesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] int instituteId = 1)
     {
-        return Ok(await _context.Courses.ToListAsync());
+        var courses = await _context.Courses
+            .Where(c => c.InstituteId == instituteId)
+            .Select(c => new
+            {
+                id = c.Id,
+                name = c.CourseName,
+                description = c.Description,
+                fee = c.Fee,
+                duration = c.DurationMonths + " months",
+                level = c.Category,
+                maxStudents = 20,
+                ageGroup = "All Ages",
+                isActive = c.IsActive,
+                courseCode = c.CourseCode
+            })
+            .ToListAsync();
+
+        return Ok(courses);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var c = await _context.Courses.FindAsync(id);
+
+        if (c == null)
+            return NotFound();
+
+        return Ok(new
+        {
+            id = c.Id,
+            name = c.CourseName,
+            description = c.Description,
+            fee = c.Fee,
+            duration = c.DurationMonths,
+            level = c.Category,
+            maxStudents = 20,
+            ageGroup = "All Ages",
+            isActive = c.IsActive,
+            courseCode = c.CourseCode
+        });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateCourseDto dto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        if (string.IsNullOrEmpty(dto.CourseName) ||
-            string.IsNullOrEmpty(dto.CourseCode))
-        {
-            return BadRequest("Invalid course data");
-        }
-
         var course = new Course
         {
             CourseName = dto.CourseName,
@@ -44,7 +75,8 @@ public class CoursesController : ControllerBase
             Fee = dto.Fee,
             DurationMonths = dto.DurationMonths,
             Description = dto.Description,
-            InstituteId = dto.InstituteId,
+            Category = dto.Category,
+            InstituteId = dto.InstituteId == 0 ? 1 : dto.InstituteId,
             IsActive = true
         };
 
@@ -52,5 +84,31 @@ public class CoursesController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(course);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, Course course)
+    {
+        if (id != course.Id)
+            return BadRequest();
+
+        _context.Entry(course).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return Ok(course);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var course = await _context.Courses.FindAsync(id);
+
+        if (course == null)
+            return NotFound();
+
+        _context.Courses.Remove(course);
+        await _context.SaveChangesAsync();
+
+        return Ok();
     }
 }
