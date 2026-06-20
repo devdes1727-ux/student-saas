@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
-export const API_BASE = 'http://localhost:8080/api';
+export const API_BASE = environment.apiBase;
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {

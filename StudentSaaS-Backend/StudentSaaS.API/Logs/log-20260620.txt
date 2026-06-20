@@ -3946,3 +3946,583 @@ WHERE [i].[Id] = @__p_0
 2026-06-20 09:59:07.272 +05:30 [INF] Executed action StudentSaaS.API.Controllers.SettingsController.GetSettings (StudentSaaS.API) in 30.6354ms
 2026-06-20 09:59:07.273 +05:30 [INF] Executed endpoint 'StudentSaaS.API.Controllers.SettingsController.GetSettings (StudentSaaS.API)'
 2026-06-20 09:59:07.274 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:8080/api/settings - 200 null application/json; charset=utf-8 38.1707ms
+2026-06-20 10:50:30.383 +05:30 [INF] Executed DbCommand (315ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-20 10:50:30.758 +05:30 [INF] Executed DbCommand (321ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-20 10:50:31.066 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-20 10:50:31.475 +05:30 [INF] Executed DbCommand (349ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2026-06-20 10:50:31.754 +05:30 [INF] Executed DbCommand (276ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-20 10:50:32.386 +05:30 [INF] Executed DbCommand (632ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-06-20 10:50:32.705 +05:30 [INF] Executed DbCommand (314ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-06-20 10:50:32.744 +05:30 [INF] Applying migration '20260611171840_InitialCreate'.
+2026-06-20 10:50:33.498 +05:30 [INF] Executed DbCommand (273ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Courses] (
+    [Id] int NOT NULL IDENTITY,
+    [InstituteId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Fee] decimal(18,2) NOT NULL,
+    CONSTRAINT [PK_Courses] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:33.769 +05:30 [INF] Executed DbCommand (269ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Institutes] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_Institutes] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:34.061 +05:30 [INF] Executed DbCommand (291ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Staff] (
+    [Id] int NOT NULL IDENTITY,
+    [InstituteId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Role] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Staff] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:34.420 +05:30 [INF] Executed DbCommand (360ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Students] (
+    [Id] int NOT NULL IDENTITY,
+    [InstituteId] int NOT NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [Course] nvarchar(max) NOT NULL,
+    [Batch] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Students] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:35.195 +05:30 [INF] Executed DbCommand (774ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260611171840_InitialCreate', N'8.0.8');
+2026-06-20 10:50:35.705 +05:30 [INF] Applying migration '20260612014222_AddUsersTable'.
+2026-06-20 10:50:36.458 +05:30 [INF] Executed DbCommand (375ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [InstituteId] int NULL,
+    [Name] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [PasswordHash] nvarchar(max) NOT NULL,
+    [Role] nvarchar(max) NOT NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:36.748 +05:30 [INF] Executed DbCommand (290ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260612014222_AddUsersTable', N'8.0.8');
+2026-06-20 10:50:37.084 +05:30 [INF] Applying migration '20260612023953_UpdateCourseModel'.
+2026-06-20 10:50:38.133 +05:30 [INF] Executed DbCommand (655ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[Courses].[Name]', N'Description', N'COLUMN';
+2026-06-20 10:50:38.414 +05:30 [INF] Executed DbCommand (280ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [CourseCode] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:38.712 +05:30 [INF] Executed DbCommand (289ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [CourseName] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:39.154 +05:30 [INF] Executed DbCommand (442ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [DurationMonths] int NOT NULL DEFAULT 0;
+2026-06-20 10:50:39.570 +05:30 [INF] Executed DbCommand (416ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [IsActive] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:50:39.974 +05:30 [INF] Executed DbCommand (403ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260612023953_UpdateCourseModel', N'8.0.8');
+2026-06-20 10:50:40.383 +05:30 [INF] Applying migration '20260612024800_CourseValidation'.
+2026-06-20 10:50:41.367 +05:30 [INF] Executed DbCommand (677ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260612024800_CourseValidation', N'8.0.8');
+2026-06-20 10:50:41.714 +05:30 [INF] Applying migration '20260612042540_AddParentFieldsToStudent'.
+2026-06-20 10:50:43.039 +05:30 [INF] Executed DbCommand (1,006ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [ParentName] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:43.692 +05:30 [INF] Executed DbCommand (653ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [ParentPhone] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:44.069 +05:30 [INF] Executed DbCommand (377ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260612042540_AddParentFieldsToStudent', N'8.0.8');
+2026-06-20 10:50:44.377 +05:30 [INF] Applying migration '20260618174340_UpdateSchemaForDrawingClass'.
+2026-06-20 10:50:45.196 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [Phone] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:45.503 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [ResetToken] nvarchar(max) NULL;
+2026-06-20 10:50:45.913 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [ResetTokenExpiry] datetime2 NULL;
+2026-06-20 10:50:46.220 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [Address] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:46.499 +05:30 [INF] Executed DbCommand (279ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [AdmissionDate] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:50:47.039 +05:30 [INF] Executed DbCommand (539ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [Age] int NOT NULL DEFAULT 0;
+2026-06-20 10:50:47.346 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [Email] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:47.756 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [Gender] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:48.063 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:50:48.334 +05:30 [INF] Executed DbCommand (271ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [ProfileImage] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:48.780 +05:30 [INF] Executed DbCommand (445ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [Status] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:49.189 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [ActiveStatus] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:50:49.497 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [Email] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:49.906 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [JoiningDate] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:50:50.214 +05:30 [INF] Executed DbCommand (308ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [Phone] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:50.623 +05:30 [INF] Executed DbCommand (408ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [Subject] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:50.915 +05:30 [INF] Executed DbCommand (292ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [Address] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:51.508 +05:30 [INF] Executed DbCommand (593ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [EmailSettings] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:51.793 +05:30 [INF] Executed DbCommand (284ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [LogoUrl] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:53.012 +05:30 [INF] Executed DbCommand (1,219ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [SocialMediaLinks] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:53.493 +05:30 [INF] Executed DbCommand (481ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [ThemeSettings] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:53.797 +05:30 [INF] Executed DbCommand (304ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Institutes] ADD [WhatsAppNumber] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:54.084 +05:30 [INF] Executed DbCommand (286ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [Category] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:50:54.514 +05:30 [INF] Executed DbCommand (430ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Attendances] (
+    [Id] int NOT NULL IDENTITY,
+    [StudentId] int NOT NULL,
+    [StudentName] nvarchar(max) NOT NULL,
+    [Date] datetime2 NOT NULL,
+    [Status] nvarchar(max) NOT NULL,
+    [Remarks] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_Attendances] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:54.984 +05:30 [INF] Executed DbCommand (470ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ContactEnquiries] (
+    [Id] int NOT NULL IDENTITY,
+    [FullName] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [Message] nvarchar(max) NOT NULL,
+    [Source] nvarchar(max) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_ContactEnquiries] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:55.436 +05:30 [INF] Executed DbCommand (451ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Events] (
+    [Id] int NOT NULL IDENTITY,
+    [Title] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [ImageUrl] nvarchar(max) NOT NULL,
+    [Category] nvarchar(max) NOT NULL,
+    [EventDate] datetime2 NOT NULL,
+    [Location] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_Events] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:55.743 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [GalleryImages] (
+    [Id] int NOT NULL IDENTITY,
+    [Title] nvarchar(max) NOT NULL,
+    [ImageUrl] nvarchar(max) NOT NULL,
+    [Category] nvarchar(max) NOT NULL,
+    [IsFeatured] bit NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_GalleryImages] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:56.042 +05:30 [INF] Executed DbCommand (298ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Payments] (
+    [Id] int NOT NULL IDENTITY,
+    [StudentId] int NOT NULL,
+    [StudentName] nvarchar(max) NOT NULL,
+    [CourseId] int NOT NULL,
+    [CourseName] nvarchar(max) NOT NULL,
+    [TotalFee] decimal(18,2) NOT NULL,
+    [PaidAmount] decimal(18,2) NOT NULL,
+    [BalanceAmount] decimal(18,2) NOT NULL,
+    [PaymentDate] datetime2 NOT NULL,
+    [PaymentMethod] nvarchar(max) NOT NULL,
+    [Remarks] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_Payments] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:56.665 +05:30 [INF] Executed DbCommand (623ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Testimonials] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [Role] nvarchar(max) NOT NULL,
+    [Message] nvarchar(max) NOT NULL,
+    [Rating] int NOT NULL,
+    [ImageUrl] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_Testimonials] PRIMARY KEY ([Id])
+);
+2026-06-20 10:50:57.074 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260618174340_UpdateSchemaForDrawingClass', N'8.0.8');
+2026-06-20 10:50:57.586 +05:30 [INF] Applying migration '20260620031503_AddAcademyMergeSchema'.
+2026-06-20 10:50:58.303 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryImages] DROP CONSTRAINT [PK_GalleryImages];
+2026-06-20 10:50:58.815 +05:30 [INF] Executed DbCommand (512ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[GalleryImages]', N'GalleryItems';
+2026-06-20 10:50:59.329 +05:30 [INF] Executed DbCommand (514ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:50:59.634 +05:30 [INF] Executed DbCommand (305ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:00.055 +05:30 [INF] Executed DbCommand (420ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:00.332 +05:30 [INF] Executed DbCommand (277ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:00.659 +05:30 [INF] Executed DbCommand (326ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Users] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:01.068 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Testimonials] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:01.437 +05:30 [INF] Executed DbCommand (369ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Testimonials] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:02.492 +05:30 [INF] Executed DbCommand (1,055ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Testimonials] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:03.116 +05:30 [INF] Executed DbCommand (624ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Testimonials] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:03.400 +05:30 [INF] Executed DbCommand (284ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Testimonials] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:03.833 +05:30 [INF] Executed DbCommand (433ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [BatchId] int NULL;
+2026-06-20 10:51:04.140 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [CourseId] int NULL;
+2026-06-20 10:51:04.417 +05:30 [INF] Executed DbCommand (277ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:04.703 +05:30 [INF] Executed DbCommand (286ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:04.985 +05:30 [INF] Executed DbCommand (281ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:05.370 +05:30 [INF] Executed DbCommand (385ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:05.676 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:05.982 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:06.392 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [Designation] nvarchar(max) NOT NULL DEFAULT N'';
+2026-06-20 10:51:06.803 +05:30 [INF] Executed DbCommand (411ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:07.093 +05:30 [INF] Executed DbCommand (290ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [Salary] decimal(18,2) NOT NULL DEFAULT 0.0;
+2026-06-20 10:51:07.416 +05:30 [INF] Executed DbCommand (323ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:07.826 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Staff] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:08.235 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:08.511 +05:30 [INF] Executed DbCommand (276ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:08.980 +05:30 [INF] Executed DbCommand (468ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:10.892 +05:30 [INF] Executed DbCommand (1,912ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:11.176 +05:30 [INF] Executed DbCommand (284ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Payments] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:11.615 +05:30 [INF] Executed DbCommand (439ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Events] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:12.127 +05:30 [INF] Executed DbCommand (512ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Events] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:12.434 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Events] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:12.741 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Events] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:13.151 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Events] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:13.458 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:13.868 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:14.380 +05:30 [INF] Executed DbCommand (505ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:14.789 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:15.096 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Courses] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:15.391 +05:30 [INF] Executed DbCommand (294ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Attendances] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:15.813 +05:30 [INF] Executed DbCommand (423ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Attendances] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:16.120 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Attendances] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:16.518 +05:30 [INF] Executed DbCommand (397ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Attendances] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:16.940 +05:30 [INF] Executed DbCommand (422ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Attendances] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:17.349 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD [CreatedAt] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+2026-06-20 10:51:17.759 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD [CreatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:18.168 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit);
+2026-06-20 10:51:18.457 +05:30 [INF] Executed DbCommand (289ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD [UpdatedAt] datetime2 NULL;
+2026-06-20 10:51:18.783 +05:30 [INF] Executed DbCommand (325ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD [UpdatedBy] nvarchar(max) NULL;
+2026-06-20 10:51:19.090 +05:30 [INF] Executed DbCommand (306ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [GalleryItems] ADD CONSTRAINT [PK_GalleryItems] PRIMARY KEY ([Id]);
+2026-06-20 10:51:19.500 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Batches] (
+    [Id] int NOT NULL IDENTITY,
+    [BatchName] nvarchar(max) NOT NULL,
+    [StartTime] nvarchar(max) NOT NULL,
+    [EndTime] nvarchar(max) NOT NULL,
+    [TeacherId] int NULL,
+    [CourseId] int NOT NULL,
+    [InstituteId] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] nvarchar(max) NULL,
+    [UpdatedBy] nvarchar(max) NULL,
+    CONSTRAINT [PK_Batches] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Batches_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION,
+    CONSTRAINT [FK_Batches_Staff_TeacherId] FOREIGN KEY ([TeacherId]) REFERENCES [Staff] ([Id]) ON DELETE NO ACTION
+);
+2026-06-20 10:51:19.909 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Contacts] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [Message] nvarchar(max) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [InstituteId] int NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    CONSTRAINT [PK_Contacts] PRIMARY KEY ([Id])
+);
+2026-06-20 10:51:20.217 +05:30 [INF] Executed DbCommand (308ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Enquiries] (
+    [Id] int NOT NULL IDENTITY,
+    [StudentName] nvarchar(max) NOT NULL,
+    [Age] int NOT NULL,
+    [Gender] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(max) NOT NULL,
+    [ParentName] nvarchar(max) NOT NULL,
+    [ParentPhone] nvarchar(max) NOT NULL,
+    [CourseId] int NOT NULL,
+    [Message] nvarchar(max) NOT NULL,
+    [Status] nvarchar(max) NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [InstituteId] int NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    CONSTRAINT [PK_Enquiries] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Enquiries_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE
+);
+2026-06-20 10:51:20.626 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [FeePlans] (
+    [Id] int NOT NULL IDENTITY,
+    [PlanName] nvarchar(max) NOT NULL,
+    [CourseId] int NOT NULL,
+    [TotalAmount] decimal(18,2) NOT NULL,
+    [Installments] int NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    [IsActive] bit NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CreatedBy] nvarchar(max) NULL,
+    [UpdatedBy] nvarchar(max) NULL,
+    CONSTRAINT [PK_FeePlans] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_FeePlans_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE CASCADE
+);
+2026-06-20 10:51:21.035 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Notifications] (
+    [Id] int NOT NULL IDENTITY,
+    [Title] nvarchar(max) NOT NULL,
+    [Message] nvarchar(max) NOT NULL,
+    [Type] nvarchar(max) NOT NULL,
+    [IsRead] bit NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UserId] int NOT NULL,
+    [InstituteId] int NOT NULL,
+    [IsDeleted] bit NOT NULL,
+    CONSTRAINT [PK_Notifications] PRIMARY KEY ([Id])
+);
+2026-06-20 10:51:21.342 +05:30 [INF] Executed DbCommand (307ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [RefreshTokens] (
+    [Id] int NOT NULL IDENTITY,
+    [Token] nvarchar(max) NOT NULL,
+    [Expires] datetime2 NOT NULL,
+    [Created] datetime2 NOT NULL,
+    [CreatedByIp] nvarchar(max) NOT NULL,
+    [Revoked] datetime2 NULL,
+    [RevokedByIp] nvarchar(max) NULL,
+    [ReplacedByToken] nvarchar(max) NULL,
+    [UserId] int NOT NULL,
+    CONSTRAINT [PK_RefreshTokens] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_RefreshTokens_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2026-06-20 10:51:21.752 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Roles] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY ([Id])
+);
+2026-06-20 10:51:22.163 +05:30 [INF] Executed DbCommand (411ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Settings] (
+    [Id] int NOT NULL IDENTITY,
+    [Key] nvarchar(max) NOT NULL,
+    [Value] nvarchar(max) NOT NULL,
+    [InstituteId] int NOT NULL,
+    CONSTRAINT [PK_Settings] PRIMARY KEY ([Id])
+);
+2026-06-20 10:51:22.577 +05:30 [INF] Executed DbCommand (414ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Students_BatchId] ON [Students] ([BatchId]);
+2026-06-20 10:51:22.981 +05:30 [INF] Executed DbCommand (404ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Students_CourseId] ON [Students] ([CourseId]);
+2026-06-20 10:51:23.301 +05:30 [INF] Executed DbCommand (319ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Batches_CourseId] ON [Batches] ([CourseId]);
+2026-06-20 10:51:23.782 +05:30 [INF] Executed DbCommand (481ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Batches_TeacherId] ON [Batches] ([TeacherId]);
+2026-06-20 10:51:24.312 +05:30 [INF] Executed DbCommand (530ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Enquiries_CourseId] ON [Enquiries] ([CourseId]);
+2026-06-20 10:51:24.621 +05:30 [INF] Executed DbCommand (309ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_FeePlans_CourseId] ON [FeePlans] ([CourseId]);
+2026-06-20 10:51:25.031 +05:30 [INF] Executed DbCommand (410ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_RefreshTokens_UserId] ON [RefreshTokens] ([UserId]);
+2026-06-20 10:51:25.336 +05:30 [INF] Executed DbCommand (305ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD CONSTRAINT [FK_Students_Batches_BatchId] FOREIGN KEY ([BatchId]) REFERENCES [Batches] ([Id]) ON DELETE NO ACTION;
+2026-06-20 10:51:25.746 +05:30 [INF] Executed DbCommand (409ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Students] ADD CONSTRAINT [FK_Students_Courses_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [Courses] ([Id]) ON DELETE NO ACTION;
+2026-06-20 10:51:26.035 +05:30 [INF] Executed DbCommand (289ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260620031503_AddAcademyMergeSchema', N'8.0.8');
+2026-06-20 10:51:26.873 +05:30 [INF] Executed DbCommand (449ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Roles] AS [r]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-20 10:51:27.286 +05:30 [INF] Executed DbCommand (337ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [Roles] USING (
+VALUES (@p0, 0),
+(@p1, 1)) AS i ([Name], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Name])
+VALUES (i.[Name])
+OUTPUT INSERTED.[Id], i._Position;
+2026-06-20 10:51:27.309 +05:30 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-06-20 10:51:27.794 +05:30 [INF] Executed DbCommand (461ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[Id], [i].[Address], [i].[EmailSettings], [i].[IsActive], [i].[LogoUrl], [i].[Name], [i].[Phone], [i].[SocialMediaLinks], [i].[ThemeSettings], [i].[WhatsAppNumber]
+FROM [Institutes] AS [i]
+2026-06-20 10:51:28.204 +05:30 [INF] Executed DbCommand (386ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (DbType = Boolean), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Institutes] ([Address], [EmailSettings], [IsActive], [LogoUrl], [Name], [Phone], [SocialMediaLinks], [ThemeSettings], [WhatsAppNumber])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2026-06-20 10:51:28.613 +05:30 [INF] Executed DbCommand (385ms) [Parameters=[@__adminEmail_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[InstituteId], [u].[IsActive], [u].[IsDeleted], [u].[Name], [u].[PasswordHash], [u].[Phone], [u].[ResetToken], [u].[ResetTokenExpiry], [u].[Role], [u].[UpdatedAt], [u].[UpdatedBy]
+FROM [Users] AS [u]
+WHERE [u].[Email] = @__adminEmail_0
+2026-06-20 10:51:29.023 +05:30 [INF] Executed DbCommand (374ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (Size = 4000), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (Size = 4000), @p12='?' (DbType = DateTime2), @p13='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Users] ([CreatedAt], [CreatedBy], [Email], [InstituteId], [IsActive], [IsDeleted], [Name], [PasswordHash], [Phone], [ResetToken], [ResetTokenExpiry], [Role], [UpdatedAt], [UpdatedBy])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13);
+2026-06-20 10:51:29.433 +05:30 [INF] Executed DbCommand (405ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Courses] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-20 10:51:29.843 +05:30 [INF] Executed DbCommand (373ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = DateTime2), @p4='?' (Size = 4000), @p5='?' (Size = 4000), @p6='?' (DbType = Int32), @p7='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p8='?' (DbType = Int32), @p9='?' (DbType = Boolean), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (Size = 4000), @p15='?' (Size = 4000), @p16='?' (DbType = DateTime2), @p17='?' (Size = 4000), @p18='?' (Size = 4000), @p19='?' (DbType = Int32), @p20='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p21='?' (DbType = Int32), @p22='?' (DbType = Boolean), @p23='?' (DbType = Boolean), @p24='?' (DbType = DateTime2), @p25='?' (Size = 4000), @p26='?' (Size = 4000), @p27='?' (Size = 4000), @p28='?' (Size = 4000), @p29='?' (DbType = DateTime2), @p30='?' (Size = 4000), @p31='?' (Size = 4000), @p32='?' (DbType = Int32), @p33='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p34='?' (DbType = Int32), @p35='?' (DbType = Boolean), @p36='?' (DbType = Boolean), @p37='?' (DbType = DateTime2), @p38='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [Courses] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, 0),
+(@p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, 1),
+(@p26, @p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, 2)) AS i ([Category], [CourseCode], [CourseName], [CreatedAt], [CreatedBy], [Description], [DurationMonths], [Fee], [InstituteId], [IsActive], [IsDeleted], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Category], [CourseCode], [CourseName], [CreatedAt], [CreatedBy], [Description], [DurationMonths], [Fee], [InstituteId], [IsActive], [IsDeleted], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Category], i.[CourseCode], i.[CourseName], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[DurationMonths], i.[Fee], i.[InstituteId], i.[IsActive], i.[IsDeleted], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[Id], i._Position;
+2026-06-20 10:51:30.251 +05:30 [INF] Executed DbCommand (405ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Testimonials] AS [t]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-20 10:51:30.661 +05:30 [INF] Executed DbCommand (395ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (Size = 4000), @p2='?' (Size = 4000), @p3='?' (DbType = Int32), @p4='?' (DbType = Boolean), @p5='?' (Size = 4000), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (Size = 4000), @p9='?' (DbType = DateTime2), @p10='?' (Size = 4000), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (DbType = Int32), @p15='?' (DbType = Boolean), @p16='?' (Size = 4000), @p17='?' (Size = 4000), @p18='?' (DbType = Int32), @p19='?' (Size = 4000), @p20='?' (DbType = DateTime2), @p21='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [Testimonials] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, 0),
+(@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, 1)) AS i ([CreatedAt], [CreatedBy], [ImageUrl], [InstituteId], [IsDeleted], [Message], [Name], [Rating], [Role], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([CreatedAt], [CreatedBy], [ImageUrl], [InstituteId], [IsDeleted], [Message], [Name], [Rating], [Role], [UpdatedAt], [UpdatedBy])
+VALUES (i.[CreatedAt], i.[CreatedBy], i.[ImageUrl], i.[InstituteId], i.[IsDeleted], i.[Message], i.[Name], i.[Rating], i.[Role], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[Id], i._Position;
+2026-06-20 10:51:31.173 +05:30 [INF] Executed DbCommand (508ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Events] AS [e]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-20 10:51:31.584 +05:30 [INF] Executed DbCommand (394ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = Int32), @p7='?' (DbType = Boolean), @p8='?' (Size = 4000), @p9='?' (Size = 4000), @p10='?' (DbType = DateTime2), @p11='?' (Size = 4000), @p12='?' (Size = 4000), @p13='?' (DbType = DateTime2), @p14='?' (Size = 4000), @p15='?' (Size = 4000), @p16='?' (DbType = DateTime2), @p17='?' (Size = 4000), @p18='?' (DbType = Int32), @p19='?' (DbType = Boolean), @p20='?' (Size = 4000), @p21='?' (Size = 4000), @p22='?' (DbType = DateTime2), @p23='?' (Size = 4000), @p24='?' (Size = 4000), @p25='?' (DbType = DateTime2), @p26='?' (Size = 4000), @p27='?' (Size = 4000), @p28='?' (DbType = DateTime2), @p29='?' (Size = 4000), @p30='?' (DbType = Int32), @p31='?' (DbType = Boolean), @p32='?' (Size = 4000), @p33='?' (Size = 4000), @p34='?' (DbType = DateTime2), @p35='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [Events] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, 0),
+(@p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, 1),
+(@p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35, 2)) AS i ([Category], [CreatedAt], [CreatedBy], [Description], [EventDate], [ImageUrl], [InstituteId], [IsDeleted], [Location], [Title], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Category], [CreatedAt], [CreatedBy], [Description], [EventDate], [ImageUrl], [InstituteId], [IsDeleted], [Location], [Title], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Category], i.[CreatedAt], i.[CreatedBy], i.[Description], i.[EventDate], i.[ImageUrl], i.[InstituteId], i.[IsDeleted], i.[Location], i.[Title], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[Id], i._Position;
+2026-06-20 10:51:31.890 +05:30 [INF] Executed DbCommand (295ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [GalleryItems] AS [g]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-06-20 10:51:32.299 +05:30 [INF] Executed DbCommand (393ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = DateTime2), @p2='?' (Size = 4000), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (Size = 4000), @p8='?' (DbType = DateTime2), @p9='?' (Size = 4000), @p10='?' (Size = 4000), @p11='?' (DbType = DateTime2), @p12='?' (Size = 4000), @p13='?' (Size = 4000), @p14='?' (DbType = Int32), @p15='?' (DbType = Boolean), @p16='?' (DbType = Boolean), @p17='?' (Size = 4000), @p18='?' (DbType = DateTime2), @p19='?' (Size = 4000), @p20='?' (Size = 4000), @p21='?' (DbType = DateTime2), @p22='?' (Size = 4000), @p23='?' (Size = 4000), @p24='?' (DbType = Int32), @p25='?' (DbType = Boolean), @p26='?' (DbType = Boolean), @p27='?' (Size = 4000), @p28='?' (DbType = DateTime2), @p29='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [GalleryItems] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, 0),
+(@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, 1),
+(@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, 2)) AS i ([Category], [CreatedAt], [CreatedBy], [ImageUrl], [InstituteId], [IsDeleted], [IsFeatured], [Title], [UpdatedAt], [UpdatedBy], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Category], [CreatedAt], [CreatedBy], [ImageUrl], [InstituteId], [IsDeleted], [IsFeatured], [Title], [UpdatedAt], [UpdatedBy])
+VALUES (i.[Category], i.[CreatedAt], i.[CreatedBy], i.[ImageUrl], i.[InstituteId], i.[IsDeleted], i.[IsFeatured], i.[Title], i.[UpdatedAt], i.[UpdatedBy])
+OUTPUT INSERTED.[Id], i._Position;
+2026-06-20 10:51:32.412 +05:30 [INF] User profile is available. Using 'C:\Users\T14s G2\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-20 10:51:32.444 +05:30 [WRN] The WebRootPath was not found: C:\Source\attendance\student-saas\StudentSaaS-Backend\StudentSaaS.API\wwwroot. Static files may be unavailable.
+2026-06-20 10:51:32.458 +05:30 [INF] Now listening on: http://0.0.0.0:8080
+2026-06-20 10:51:32.459 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-20 10:51:32.459 +05:30 [INF] Hosting environment: Development
+2026-06-20 10:51:32.459 +05:30 [INF] Content root path: C:\Source\attendance\student-saas\StudentSaaS-Backend\StudentSaaS.API
+2026-06-20 10:51:46.143 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:8080/api/public/courses - null null
+2026-06-20 10:51:46.173 +05:30 [WRN] Failed to determine the https port for redirect.
+2026-06-20 10:51:46.188 +05:30 [INF] Executing endpoint 'StudentSaaS.API.Controllers.PublicController.GetCourses (StudentSaaS.API)'
+2026-06-20 10:51:46.197 +05:30 [INF] Route matched with {action = "GetCourses", controller = "Public"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetCourses(Int32) on controller StudentSaaS.API.Controllers.PublicController (StudentSaaS.API).
+2026-06-20 10:51:46.635 +05:30 [INF] Executed DbCommand (416ms) [Parameters=[@__instituteId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[Category], [c].[CourseCode], [c].[CourseName], [c].[CreatedAt], [c].[CreatedBy], [c].[Description], [c].[DurationMonths], [c].[Fee], [c].[InstituteId], [c].[IsActive], [c].[IsDeleted], [c].[UpdatedAt], [c].[UpdatedBy]
+FROM [Courses] AS [c]
+WHERE [c].[InstituteId] = @__instituteId_0 AND [c].[IsActive] = CAST(1 AS bit) AND [c].[IsDeleted] = CAST(0 AS bit)
+2026-06-20 10:51:46.644 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[StudentSaaS.API.Models.Course, StudentSaaS.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-06-20 10:51:46.670 +05:30 [INF] Executed action StudentSaaS.API.Controllers.PublicController.GetCourses (StudentSaaS.API) in 471.3911ms
+2026-06-20 10:51:46.671 +05:30 [INF] Executed endpoint 'StudentSaaS.API.Controllers.PublicController.GetCourses (StudentSaaS.API)'
+2026-06-20 10:51:46.674 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:8080/api/public/courses - 200 null application/json; charset=utf-8 531.7495ms
