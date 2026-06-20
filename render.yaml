@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: student-saas-api
+    runtime: docker
+    dockerContext: StudentSaaS-Backend/StudentSaaS.API
+    dockerfilePath: StudentSaaS-Backend/StudentSaaS.API/Dockerfile
+    plan: free
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        sync: false # Render will prompt the user to paste their SQL Server Connection String during setup
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Jwt__Key
+        generateValue: true # Render will generate a random secure key automatically
+      - key: Jwt__Issuer
+        value: StudentSaaS.API
+      - key: Jwt__Audience
+        value: StudentSaaS
